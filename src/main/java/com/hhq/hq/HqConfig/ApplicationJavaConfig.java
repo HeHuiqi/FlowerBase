@@ -1,11 +1,20 @@
 package com.hhq.hq.HqConfig;
 
+import com.hhq.hq.HqDAO.HqUserDAOImp;
 import com.hhq.hq.HqSpringDI.Hello;
 import com.hhq.hq.HqSpringDI.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+
+import javax.sql.DataSource;
 
 @Configuration
+//会扫描带有@Component的类
+@ComponentScan
 public class ApplicationJavaConfig {
+
 
     @Bean
     public Hello getHello(){
@@ -13,7 +22,17 @@ public class ApplicationJavaConfig {
         hello.setName("小明");
         return hello;
     }
-    
+
+    @Bean
+    public  HqAutoSpeak autoSpeak(){
+
+        return new HqAutoSpeak();
+    }
+    @Bean
+    public HqAutoHello autoHello(){
+
+        return  new HqAutoHello();
+    }
 
     //设置一个名字
     @Bean(name = "hqStudent")
@@ -36,6 +55,32 @@ public class ApplicationJavaConfig {
         HqSchool school = new HqSchool();
         school.setTeacher(teacher);
         return school;
+    }
+
+
+
+    //配置jdbc
+    @Bean
+    public DriverManagerDataSource dataSource(){
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/work");
+        dataSource.setUsername("root");
+        dataSource.setPassword("xwf123");
+        return dataSource;
+    }
+    @Bean
+    public  JdbcTemplate jdbcTemplate(DataSource dataSource){
+        return new JdbcTemplate(dataSource);
+    }
+    @Bean
+    public HqUserDAOImp getUserDaoImp(DataSource dataSource,JdbcTemplate jdbcTemplate){
+
+        HqUserDAOImp userDAOImp = new HqUserDAOImp();
+        //setter方法或属性使用了@Autowired注解就不用调用方法了
+//        userDAOImp.setDataSource(dataSource);
+//        userDAOImp.setJdbcTemplate(jdbcTemplate);
+        return userDAOImp;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.hhq.hq.HqSpringDI;
 
+
 public class Hello {
 
     private String name;
