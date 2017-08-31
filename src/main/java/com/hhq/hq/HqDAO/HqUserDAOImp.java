@@ -28,9 +28,15 @@ public class HqUserDAOImp implements HqUserDAO {
     @Override
     public HqUser getUser(Integer id) {
 
-        String sql = "select * from user where id = ?";
+        String sql = "select * from user where userId = ?";
         HqUserMapper mapper = new HqUserMapper();
-        HqUser user = jdbcTemplate.queryForObject(sql,new Object[]{id},mapper);
-        return user;
+
+        try {
+            HqUser user = jdbcTemplate.queryForObject(sql,new Object[]{id},mapper);
+            return user;
+        }catch (Exception e){
+
+            return null;
+        }
     }
 }

@@ -2,24 +2,26 @@ package com.hhq.hq.HqDAO;
 
 public class HqUser {
 
-    private String sex;
-    private String name;
+
+
+    private String password;
+    private String username;
     private Integer id;
 
-    public String getSex() {
-        return sex;
+    public String getPassword() {
+        return password;
     }
 
-    public void setSex(String sex) {
-        this.sex = sex;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Integer getId() {
@@ -33,6 +35,6 @@ public class HqUser {
     @Override
     public String toString() {
 
-        return "{id:"+id+",name:"+name+",sex:"+sex+"}";
+        return "{id:"+id+",name:"+username+",password:"+password+"}";
     }
 }

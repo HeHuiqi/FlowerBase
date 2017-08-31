@@ -9,6 +9,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 @Configuration
 //会扫描带有@Component的类
@@ -62,11 +65,24 @@ public class ApplicationJavaConfig {
     //配置jdbc
     @Bean
     public DriverManagerDataSource dataSource(){
+
+        Properties mysqlProperties = new Properties();
+
+        String propertiesPath = "mysql-jdbc.properties";
+        String path = ApplicationJavaConfig.class.getClassLoader().getResource(propertiesPath).getPath();
+
+        try {
+            FileInputStream inputStream = new FileInputStream(path);
+            mysqlProperties.load(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/work");
-        dataSource.setUsername("root");
-        dataSource.setPassword("xwf123");
+        dataSource.setDriverClassName(mysqlProperties.getProperty("mysql_drive"));
+        dataSource.setUrl(mysqlProperties.getProperty("mysql_url"));
+        dataSource.setUsername(mysqlProperties.getProperty("username"));
+        dataSource.setPassword(mysqlProperties.getProperty("password"));
         return dataSource;
     }
     @Bean
